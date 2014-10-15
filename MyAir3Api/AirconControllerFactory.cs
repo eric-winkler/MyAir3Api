@@ -2,9 +2,9 @@
 
 namespace Winkler.MyAir3Api
 {
-    public class AirconControllerFactory
+    public static class AirconControllerFactory
     {
-        public AirconController Build(string baseAddress)
+        public static AirconController Build(string baseAddress)
         {
             return new AirconController(new AuthenticatedAirconWebClient(new AirconWebClient(baseAddress)));
         }
