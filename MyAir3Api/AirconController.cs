@@ -19,9 +19,10 @@ namespace Winkler.MyAir3Api
             return await _aircon.GetAsync("login?password=password");
         }
 
-        public async Task<AirconWebResponse> GetSystemData()
+        public async Task<ZoneStation> GetZoneStationAsync()
         {
-            return await _aircon.GetAsync("getSystemData");
+            var systemData = await _aircon.GetAsync("getSystemData");
+            return new ZoneStation(_aircon, systemData.InnerResponse.Element("system"));
         }
 
         public async Task<IEnumerable<Zone>> GetZonesAsync()
@@ -31,7 +32,7 @@ namespace Winkler.MyAir3Api
                 {
                     ZoneId = z,
                     ZoneTask = _aircon.GetAsync("getZoneData?zone=" + z)
-                });
+                }).ToArray();
             await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask));
 
             return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));

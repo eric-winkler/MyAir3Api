@@ -46,9 +46,13 @@
     <Compile Include="AirconWebClient.cs" />
     <Compile Include="AirconWebResponse.cs" />
     <Compile Include="AuthenticatedAirconWebClient.cs" />
+    <Compile Include="FanSpeed.cs" />
     <Compile Include="IAirconWebClient.cs" />
+    <Compile Include="InverterMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitControl.cs" />
     <Compile Include="Zone.cs" />
+    <Compile Include="ZoneStation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
