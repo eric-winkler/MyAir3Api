@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Winkler.MyAir3Api
@@ -46,6 +49,19 @@ namespace Winkler.MyAir3Api
 
             UnitControl = new UnitControl(_aircon, data.Element("unitcontrol"));
             Zs103TechSettings = data.Element("zs103TechSettings");
+        }
+
+        public async Task<IEnumerable<Zone>> GetZonesAsync()
+        {
+            var zoneRetrievalTasks = Enumerable.Range(1, UnitControl.NumberOfZones)
+                .Select(z => new
+                {
+                    ZoneId = z,
+                    ZoneTask = _aircon.GetAsync("getZoneData?zone=" + z)
+                }).ToArray();
+            await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask));
+
+            return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));
         }
     }
 }

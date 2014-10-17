@@ -6,7 +6,6 @@ namespace Winkler.MyAir3Api
 {
     public class AirconController
     {
-        private const int NumberOfZones = 10;
         private readonly IAirconWebClient _aircon;
 
         public AirconController(IAirconWebClient aircon)
@@ -23,19 +22,6 @@ namespace Winkler.MyAir3Api
         {
             var systemData = await _aircon.GetAsync("getSystemData");
             return new ZoneStation(_aircon, systemData.InnerResponse.Element("system"));
-        }
-
-        public async Task<IEnumerable<Zone>> GetZonesAsync()
-        {
-            var zoneRetrievalTasks = Enumerable.Range(1, NumberOfZones)
-                .Select(z => new
-                {
-                    ZoneId = z,
-                    ZoneTask = _aircon.GetAsync("getZoneData?zone=" + z)
-                }).ToArray();
-            await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask));
-
-            return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));
         }
     }
 }
