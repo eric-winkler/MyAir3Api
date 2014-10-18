@@ -16,7 +16,7 @@ namespace Winkler.MyAir3Api
         public ScheduledDay ScheduledDays { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public bool Enabled { get; set; }
+        public bool Enabled { get; private set; }
         public IEnumerable<ZoneStatus> Zones { get; private set; }
 
         public Schedule(IAirconWebClient aircon, int number, XElement scheduleData)
@@ -38,6 +38,20 @@ namespace Winkler.MyAir3Api
 
             Enabled = int.Parse(scheduleData.Element("scheduleStatus").Value) == 1;
             Zones = scheduleData.Element("zoneStatus").Elements().Select(e => new ZoneStatus(e)).ToArray();
+        }
+
+        public async Task<AirconWebResponse> DisableAsync()
+        {
+            ScheduledDays = ScheduledDay.None;
+            StartTime = new TimeSpan(0,0,0,0);
+            EndTime = new TimeSpan(0, 0, 0, 0);
+            Enabled = false;
+            foreach (var z in Zones)
+            {
+                z.Enabled = false;
+            }
+
+            return await UpdateAsync();
         }
 
         public async Task<AirconWebResponse> UpdateAsync()
