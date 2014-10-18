@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -73,6 +74,18 @@ namespace Winkler.MyAir3Api
             return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
         }
 
+        public async Task<AirconWebResponse> SyncSystemClockAsync()
+        {
+            var now = DateTime.Now;
+            return await _aircon.GetAsync("setClock?"
+                                            + "hours=" + now.Hour
+                                            + "&minutes=" + now.Minute
+                                            + "&day=" + now.Day
+                                            + "&month=" + now.Month
+                                            + "&year=" + now.Year
+                                            + "&dow=" + ToIntDayOfWeek(now.DayOfWeek));
+        }
+
         public async Task<SleepTimer> GetSleepTimerAsync()
         {
             var zoneTimer = await _aircon.GetAsync("getZoneTimer");
@@ -86,6 +99,29 @@ namespace Winkler.MyAir3Api
                 + "&fanSpeed=" + (int)FanSpeed
                 + "&mode=" + (int)InverterMode
                 + "&centralDesiredTemp=" + CentralDesiredTemp);
+        }
+
+        private static int ToIntDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return 1;
+                case DayOfWeek.Tuesday:
+                    return 2;
+                case DayOfWeek.Wednesday:
+                    return 3;
+                case DayOfWeek.Thursday:
+                    return 4;
+                case DayOfWeek.Friday:
+                    return 5;
+                case DayOfWeek.Saturday:
+                    return 6;
+                case DayOfWeek.Sunday:
+                    return 7;
+                default:
+                    throw new ArgumentException("Unrecognised day of week: " + dayOfWeek);
+            }
         }
     }
 }
