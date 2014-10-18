@@ -45,7 +45,6 @@ namespace Winkler.MyAir3Api
             ScheduledDays = ScheduledDay.None;
             StartTime = new TimeSpan(0,0,0,0);
             EndTime = new TimeSpan(0, 0, 0, 0);
-            Enabled = false;
             foreach (var z in Zones)
             {
                 z.Enabled = false;
@@ -56,6 +55,7 @@ namespace Winkler.MyAir3Api
 
         public async Task<AirconWebResponse> UpdateAsync()
         {
+            Enabled = ScheduledDays != ScheduledDay.None;
             return await _aircon.GetAsync("setScheduleData?"
                 + "schedule=" + Number
                 + "&day=" + ToSetDaysString(ScheduledDays)
