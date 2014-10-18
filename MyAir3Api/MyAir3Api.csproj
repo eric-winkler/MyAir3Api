@@ -41,8 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirconController.cs" />
-    <Compile Include="AirconControllerFactory.cs" />
+    <Compile Include="Aircon.cs" />
     <Compile Include="AirconWebClient.cs" />
     <Compile Include="AirconWebResponse.cs" />
     <Compile Include="AuthenticatedAirconWebClient.cs" />

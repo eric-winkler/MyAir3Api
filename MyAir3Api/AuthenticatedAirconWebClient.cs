@@ -16,8 +16,13 @@ namespace Winkler.MyAir3Api
             var response = await _underlying.GetAsync(requestUri);
             if (response.IsAuthenticated) return response;
 
-            await new AirconController(_underlying).Login();
+            await LoginAsync();
             return await _underlying.GetAsync(requestUri);
+        }
+
+        private async Task<AirconWebResponse> LoginAsync()
+        {
+            return await _underlying.GetAsync("login?password=password");
         }
     }
 }
