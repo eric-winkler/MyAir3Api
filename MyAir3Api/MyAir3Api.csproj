@@ -52,11 +52,12 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="ScheduledDay.cs" />
     <Compile Include="SleepTimerStatus.cs" />
-    <Compile Include="UnitControl.cs" />
+    <Compile Include="SystemInfo.cs" />
     <Compile Include="SleepTimer.cs" />
     <Compile Include="Zone.cs" />
     <Compile Include="ZoneStation.cs" />
     <Compile Include="ZoneStatus.cs" />
+    <Compile Include="Zs103TechSettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

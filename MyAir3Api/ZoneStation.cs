@@ -9,51 +9,47 @@ namespace Winkler.MyAir3Api
     {
         private readonly IAirconWebClient _aircon;
 
-        //<zs103TechSettings>
-        //  <numberofConstantZones>2</numberofConstantZones>
-        //  <zsConstantZone1>1</zsConstantZone1>
-        //  <zsConstantZone2>2</zsConstantZone2>
-        //  <zsConstantZone3>0</zsConstantZone3>
-        //  <tempSensorSelect>0</tempSensorSelect>
-        //  <returnAirOffset>2.0</returnAirOffset>
-        //  <controlZoneNumber>0</controlZoneNumber>
-        //  <newAirFitted>0</newAirFitted>
-        //  <ACinfo>1</ACinfo>
-        //  <systemID>16</systemID>
-        //</zs103TechSettings>
+        public bool PowerOn { get; set; }
+        public FanSpeed FanSpeed { get; set; }
+        public InverterMode InverterMode { get; set; }
+        public bool TempsSetting { get; private set; }
+        public decimal CentralActualTemp { get; private set; }
+        public decimal CentralDesiredTemp { get; set; }
+        public string ErrorCode { get; private set; }
+        public string ActivationCodeStatus { get; private set; }
+        public int NumberOfZones { get; private set; }
+        public decimal MaxUserTemp { get; private set; }
+        public decimal MinUserTemp { get; private set; }
+        public int NumberOfSchedules { get; private set; }
 
-        public int SystemType { get; private set; }
-        public string Name { get; private set; }
-        public string MyAppRevision { get; private set; }
-        public bool HasUnitControl { get; private set; }
-        public bool Dhcp { get; private set; }
-        public string Ip { get; private set; }
-        public string Netmask { get; private set; }
-        public string Gateway { get; private set; }
-
-        public UnitControl UnitControl { get; private set; }
-        public XElement Zs103TechSettings { get; private set; }
+        public SystemInfo SystemInfo { get; private set; }
+        public Zs103TechSettings Zs103TechSettings { get; private set; }
 
         public ZoneStation(IAirconWebClient aircon, XElement data)
         {
             _aircon = aircon;
 
-            SystemType = int.Parse(data.Element("type").Value);
-            Name = data.Element("name").Value;
-            MyAppRevision = data.Element("MyAppRev").Value;
-            HasUnitControl = int.Parse(data.Element("zoneStationHasUnitControl").Value) == 1;
-            Dhcp = int.Parse(data.Element("dhcp").Value) == 1;
-            Ip = data.Element("ip").Value;
-            Netmask = data.Element("netmask").Value;
-            Gateway = data.Element("gateway").Value;
+            SystemInfo = new SystemInfo(data);
+            Zs103TechSettings = new Zs103TechSettings(data.Element("zs103TechSettings"));
 
-            UnitControl = new UnitControl(_aircon, data.Element("unitcontrol"));
-            Zs103TechSettings = data.Element("zs103TechSettings");
+            var unitControlElement = data.Element("unitcontrol");
+            PowerOn = int.Parse(unitControlElement.Element("airconOnOff").Value) == 1;
+            FanSpeed = (FanSpeed)int.Parse(unitControlElement.Element("fanSpeed").Value);
+            InverterMode = (InverterMode)int.Parse(unitControlElement.Element("mode").Value);
+            TempsSetting = int.Parse(unitControlElement.Element("unitControlTempsSetting").Value) == 1;
+            CentralActualTemp = decimal.Parse(unitControlElement.Element("centralActualTemp").Value);
+            CentralDesiredTemp = decimal.Parse(unitControlElement.Element("centralDesiredTemp").Value);
+            ErrorCode = unitControlElement.Element("airConErrorCode").Value;
+            ActivationCodeStatus = unitControlElement.Element("activationCodeStatus").Value;
+            NumberOfZones = int.Parse(unitControlElement.Element("numberOfZones").Value);
+            MaxUserTemp = decimal.Parse(unitControlElement.Element("maxUserTemp").Value);
+            MinUserTemp = decimal.Parse(unitControlElement.Element("minUserTemp").Value);
+            NumberOfSchedules = int.Parse(unitControlElement.Element("availableSchedules").Value);
         }
 
         public async Task<IEnumerable<Zone>> GetZonesAsync()
         {
-            var zoneRetrievalTasks = Enumerable.Range(1, UnitControl.NumberOfZones)
+            var zoneRetrievalTasks = Enumerable.Range(1, NumberOfZones)
                 .Select(z => new
                 {
                     ZoneId = z,
@@ -66,7 +62,7 @@ namespace Winkler.MyAir3Api
 
         public async Task<IEnumerable<Schedule>> GetSchedulesAsync()
         {
-            var scheduleRetrievalTasks = Enumerable.Range(1, UnitControl.NumberOfSchedules)
+            var scheduleRetrievalTasks = Enumerable.Range(1, NumberOfSchedules)
                 .Select(s => new
                 {
                     ScheduleId = s,
@@ -81,6 +77,15 @@ namespace Winkler.MyAir3Api
         {
             var zoneTimer = await _aircon.GetAsync("getZoneTimer");
             return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
+        }
+
+        public async Task<AirconWebResponse> UpdateAsync()
+        {
+            return await _aircon.GetAsync("setSystemData?"
+                + "airconOnOff=" + (PowerOn ? "1" : "0")
+                + "&fanSpeed=" + (int)FanSpeed
+                + "&mode=" + (int)InverterMode
+                + "&centralDesiredTemp=" + CentralDesiredTemp);
         }
     }
 }
