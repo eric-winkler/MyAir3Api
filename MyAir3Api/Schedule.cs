@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Linq;
 
 namespace Winkler.MyAir3Api
@@ -35,7 +37,33 @@ namespace Winkler.MyAir3Api
             EndTime = new TimeSpan(0, endTimeHours, endTimeMinutes, 0);
 
             Enabled = int.Parse(scheduleData.Element("scheduleStatus").Value) == 1;
-            Zones = scheduleData.Element("zoneStatus").Elements().Select(e => new ZoneStatus(e));
+            Zones = scheduleData.Element("zoneStatus").Elements().Select(e => new ZoneStatus(e)).ToArray();
+        }
+
+        public async Task<AirconWebResponse> UpdateAsync()
+        {
+            return await _aircon.GetAsync("setScheduleData?"
+                + "schedule=" + Number
+                + "&day=" + ToSetDaysString(ScheduledDays)
+                + "&startHours=" + StartTime.Hours
+                + "&startMinutes=" + StartTime.Minutes
+                + "&endHours=" + EndTime.Hours
+                + "&endMinutes=" + EndTime.Minutes
+                + "&scheduleStatus=" + (Enabled ? "1" : "0")
+                + "&zoneStatus=0"  // not sure what this is, always seems to be zero
+                + "&zones=" + Zones.OrderBy(z => z.ZoneNumber).Aggregate("", (a,z) => a + (z.Enabled ? "1" : "0"))
+                + "&name=" + HttpUtility.UrlEncode(Name));
+        }
+
+        private static string ToSetDaysString(ScheduledDay scheduledDays)
+        {
+            return (scheduledDays.HasFlag(ScheduledDay.Monday) ? "1" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Tuesday) ? "2" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Wednesday) ? "3" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Thursday) ? "4" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Friday) ? "5" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Saturday) ? "6" : "")
+                   + (scheduledDays.HasFlag(ScheduledDay.Sunday) ? "7" : "");
         }
 
         private static ScheduledDay ParseScheduledDays(XElement element)
