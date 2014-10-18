@@ -52,6 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="ScheduledDay.cs" />
+    <Compile Include="SleepTimerStatus.cs" />
     <Compile Include="UnitControl.cs" />
     <Compile Include="SleepTimer.cs" />
     <Compile Include="Zone.cs" />

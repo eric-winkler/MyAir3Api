@@ -7,7 +7,7 @@ namespace Winkler.MyAir3Api
     {
         private readonly IAirconWebClient _aircon;
 
-        public bool Power { get; private set; }
+        public bool PowerOn { get; private set; }
         public FanSpeed FanSpeed { get; set; }
         public InverterMode InverterMode { get; set; }
         public bool TempsSetting { get; private set; }
@@ -24,7 +24,7 @@ namespace Winkler.MyAir3Api
         {
             _aircon = aircon;
 
-            Power = int.Parse(data.Element("airconOnOff").Value) == 1;
+            PowerOn = int.Parse(data.Element("airconOnOff").Value) == 1;
             FanSpeed = (FanSpeed) int.Parse(data.Element("fanSpeed").Value);
             InverterMode = (InverterMode) int.Parse(data.Element("mode").Value);
             TempsSetting = int.Parse(data.Element("unitControlTempsSetting").Value) == 1;
@@ -41,16 +41,10 @@ namespace Winkler.MyAir3Api
         public async Task<AirconWebResponse> UpdateAsync()
         {
             return await _aircon.GetAsync("setSystemData?"
-                + "airconOnOff=" + (Power ? "1" : "0")
+                + "airconOnOff=" + (PowerOn ? "1" : "0")
                 + "&fanSpeed=" + (int) FanSpeed
                 + "&mode=" + (int) InverterMode
                 + "&centralDesiredTemp=" + CentralDesiredTemp);
-        }
-
-        public async Task<SleepTimer> GetSleepTimerAsync()
-        {
-            var zoneTimer = await _aircon.GetAsync("getZoneTimer");
-            return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
         }
     }
 }

@@ -76,5 +76,11 @@ namespace Winkler.MyAir3Api
 
             return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
         }
+
+        public async Task<SleepTimer> GetSleepTimerAsync()
+        {
+            var zoneTimer = await _aircon.GetAsync("getZoneTimer");
+            return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
+        }
     }
 }
