@@ -50,10 +50,13 @@
     <Compile Include="IAirconWebClient.cs" />
     <Compile Include="InverterMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schedule.cs" />
+    <Compile Include="ScheduledDay.cs" />
     <Compile Include="UnitControl.cs" />
     <Compile Include="SleepTimer.cs" />
     <Compile Include="Zone.cs" />
     <Compile Include="ZoneStation.cs" />
+    <Compile Include="ZoneStatus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

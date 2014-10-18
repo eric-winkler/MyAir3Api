@@ -63,5 +63,18 @@ namespace Winkler.MyAir3Api
 
             return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));
         }
+
+        public async Task<IEnumerable<Schedule>> GetSchedulesAsync()
+        {
+            var scheduleRetrievalTasks = Enumerable.Range(1, UnitControl.NumberOfSchedules)
+                .Select(s => new
+                {
+                    ScheduleId = s,
+                    ScheduleTask = _aircon.GetAsync("getScheduleData?schedule=" + s)
+                }).ToArray();
+            await Task.WhenAll(scheduleRetrievalTasks.Select(s => s.ScheduleTask));
+
+            return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
+        }
     }
 }
