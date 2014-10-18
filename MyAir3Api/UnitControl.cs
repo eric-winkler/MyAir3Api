@@ -46,5 +46,11 @@ namespace Winkler.MyAir3Api
                 + "&mode=" + (int) InverterMode
                 + "&centralDesiredTemp=" + CentralDesiredTemp);
         }
+
+        public async Task<SleepTimer> GetSleepTimerAsync()
+        {
+            var zoneTimer = await _aircon.GetAsync("getZoneTimer");
+            return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
+        }
     }
 }

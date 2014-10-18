@@ -51,6 +51,7 @@
     <Compile Include="InverterMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitControl.cs" />
+    <Compile Include="SleepTimer.cs" />
     <Compile Include="Zone.cs" />
     <Compile Include="ZoneStation.cs" />
   </ItemGroup>
