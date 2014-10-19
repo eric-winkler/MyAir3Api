@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace Winkler.MFMyAir3Api
 {
@@ -44,18 +45,17 @@ namespace Winkler.MFMyAir3Api
             NumberOfSchedules = int.Parse(unitControlElement.Element("availableSchedules").Value);
         }
 
-        //public async Task<IEnumerable<Zone>> GetZonesAsync()
-        //{
-        //    var zoneRetrievalTasks = Enumerable.Range(1, NumberOfZones)
-        //        .Select(z => new
-        //        {
-        //            ZoneId = z,
-        //            ZoneTask = _aircon.GetAsync("getZoneData?zone=" + z)
-        //        }).ToArray();
-        //    await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask));
+        public Zone[] GetZones()
+        {
+            var zones = new Zone[NumberOfZones];
+            for (var zoneId = 1; zoneId <= NumberOfZones; zoneId++)
+            {
+                var zoneResult = _aircon.Get("getZoneData?zone=" + zoneId);
+                zones[zoneId - 1] = new Zone(_aircon, zoneId, zoneResult.InnerResponse);
+            }
 
-        //    return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));
-        //}
+            return zones;
+        }
 
         //public async Task<IEnumerable<Schedule>> GetSchedulesAsync()
         //{

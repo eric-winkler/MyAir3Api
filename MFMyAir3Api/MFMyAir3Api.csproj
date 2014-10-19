@@ -34,6 +34,7 @@
     <Compile Include="AirconWebResponse.cs" />
     <Compile Include="AuthenticatedAirconWebClient.cs" />
     <Compile Include="FanSpeed.cs" />
+    <Compile Include="HttpUtility.cs" />
     <Compile Include="IAirconWebClient.cs" />
     <Compile Include="InverterMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="SystemInfo.cs" />
     <Compile Include="XElement.cs" />
     <Compile Include="XmlReaderEx.cs" />
+    <Compile Include="Zone.cs" />
     <Compile Include="ZoneStation.cs" />
     <Compile Include="Zs103TechSettings.cs" />
   </ItemGroup>
