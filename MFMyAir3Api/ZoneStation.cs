@@ -19,15 +19,15 @@ namespace Winkler.MFMyAir3Api
         public double MinUserTemp { get; private set; }
         public int NumberOfSchedules { get; private set; }
 
-        //public SystemInfo SystemInfo { get; private set; }
-        //public Zs103TechSettings Zs103TechSettings { get; private set; }
+        public SystemInfo SystemInfo { get; private set; }
+        public Zs103TechSettings Zs103TechSettings { get; private set; }
 
         public ZoneStation(IAirconWebClient aircon, XElement data)
         {
             _aircon = aircon;
 
-            //SystemInfo = new SystemInfo(data);
-            //Zs103TechSettings = new Zs103TechSettings(data.Element("zs103TechSettings"));
+            SystemInfo = new SystemInfo(data);
+            Zs103TechSettings = new Zs103TechSettings(data.Element("zs103TechSettings"));
             
             var unitControlElement = data.Element("unitcontrol");
             PowerOn = int.Parse(unitControlElement.Element("airconOnOff").Value) == 1;
@@ -88,14 +88,14 @@ namespace Winkler.MFMyAir3Api
         //    return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
         //}
 
-        //public async Task<AirconWebResponse> UpdateAsync()
-        //{
-        //    return await _aircon.GetAsync("setSystemData?"
-        //        + "airconOnOff=" + (PowerOn ? "1" : "0")
-        //        + "&fanSpeed=" + (int)FanSpeed
-        //        + "&mode=" + (int)InverterMode
-        //        + "&centralDesiredTemp=" + CentralDesiredTemp);
-        //}
+        public AirconWebResponse Update()
+        {
+            return _aircon.Get("setSystemData?"
+                + "airconOnOff=" + (PowerOn ? "1" : "0")
+                + "&fanSpeed=" + (int)FanSpeed
+                + "&mode=" + (int)InverterMode
+                + "&centralDesiredTemp=" + CentralDesiredTemp);
+        }
 
         private static int ToIntDayOfWeek(DayOfWeek dayOfWeek)
         {
