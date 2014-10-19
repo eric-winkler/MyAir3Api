@@ -70,23 +70,23 @@ namespace Winkler.MFMyAir3Api
         //    return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
         //}
 
-        //public async Task<AirconWebResponse> SyncSystemClockAsync()
-        //{
-        //    var now = DateTime.Now;
-        //    return await _aircon.GetAsync("setClock?"
-        //                                    + "hours=" + now.Hour
-        //                                    + "&minutes=" + now.Minute
-        //                                    + "&day=" + now.Day
-        //                                    + "&month=" + now.Month
-        //                                    + "&year=" + now.Year
-        //                                    + "&dow=" + ToIntDayOfWeek(now.DayOfWeek));
-        //}
+        public AirconWebResponse SyncSystemClock()
+        {
+            var now = DateTime.Now;
+            return _aircon.Get("setClock?"
+                                + "hours=" + now.Hour
+                                + "&minutes=" + now.Minute
+                                + "&day=" + now.Day
+                                + "&month=" + now.Month
+                                + "&year=" + now.Year
+                                + "&dow=" + ToIntDayOfWeek(now.DayOfWeek));
+        }
 
-        //public async Task<SleepTimer> GetSleepTimerAsync()
-        //{
-        //    var zoneTimer = await _aircon.GetAsync("getZoneTimer");
-        //    return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
-        //}
+        public SleepTimer GetSleepTimer()
+        {
+            var zoneTimer = _aircon.Get("getZoneTimer");
+            return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
+        }
 
         public AirconWebResponse Update()
         {

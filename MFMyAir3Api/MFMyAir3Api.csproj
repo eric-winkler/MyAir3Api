@@ -37,6 +37,8 @@
     <Compile Include="IAirconWebClient.cs" />
     <Compile Include="InverterMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SleepTimer.cs" />
+    <Compile Include="SleepTimerStatus.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="XElement.cs" />
     <Compile Include="XmlReaderEx.cs" />
