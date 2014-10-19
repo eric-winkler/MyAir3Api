@@ -5,6 +5,10 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAir3Api", "MyAir3Api\MyAir3Api.csproj", "{3C482FF4-DA9D-4E28-928A-01D1AAC4551E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFMyAir3Api", "MFMyAir3Api\MFMyAir3Api.csproj", "{15A06254-0A08-477C-8BA7-DC761F948B38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFTests", "MFTests\MFTests.csproj", "{B9DF9245-D555-41E6-8060-01646712699D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,16 @@ Global
 		{3C482FF4-DA9D-4E28-928A-01D1AAC4551E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C482FF4-DA9D-4E28-928A-01D1AAC4551E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C482FF4-DA9D-4E28-928A-01D1AAC4551E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A06254-0A08-477C-8BA7-DC761F948B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A06254-0A08-477C-8BA7-DC761F948B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A06254-0A08-477C-8BA7-DC761F948B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A06254-0A08-477C-8BA7-DC761F948B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9DF9245-D555-41E6-8060-01646712699D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,9 +16,11 @@ namespace Winkler.MyAir3Api
             }
         }
 
+        private AirconWebResponse()  { }
+
         public static AirconWebResponse Parse(string text)
         {
-            return new AirconWebResponse() { InnerResponse = XElement.Parse(text) };
+            return new AirconWebResponse { InnerResponse = XElement.Parse(text) };
         }
     }
 }
