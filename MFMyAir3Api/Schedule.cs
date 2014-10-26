@@ -35,45 +35,55 @@ namespace Winkler.MFMyAir3Api
             Zones = ParseZoneStatus(scheduleData.Element("zoneStatus"));
         }
 
-        //public async Task<AirconWebResponse> DisableAsync()
-        //{
-        //    ScheduledDays = ScheduledDay.None;
-        //    StartTime = new TimeSpan(0,0,0,0);
-        //    EndTime = new TimeSpan(0, 0, 0, 0);
-        //    foreach (var z in Zones)
-        //    {
-        //        z.Enabled = false;
-        //    }
+        public AirconWebResponse Disable()
+        {
+            ScheduledDays = ScheduledDay.None;
+            StartTime = new TimeSpan(0, 0, 0, 0);
+            EndTime = new TimeSpan(0, 0, 0, 0);
+            foreach (var z in Zones)
+            {
+                z.Enabled = false;
+            }
 
-        //    return await UpdateAsync();
-        //}
+            return Update();
+        }
 
-        //public async Task<AirconWebResponse> UpdateAsync()
-        //{
-        //    Enabled = ScheduledDays != ScheduledDay.None;
-        //    return await _aircon.GetAsync("setScheduleData?"
-        //        + "schedule=" + Number
-        //        + "&day=" + ToSetDaysString(ScheduledDays)
-        //        + "&startHours=" + StartTime.Hours
-        //        + "&startMinutes=" + StartTime.Minutes
-        //        + "&endHours=" + EndTime.Hours
-        //        + "&endMinutes=" + EndTime.Minutes
-        //        + "&scheduleStatus=" + (Enabled ? "1" : "0")
-        //        + "&zoneStatus=0"  // not sure what this is, always seems to be zero
-        //        + "&zones=" + Zones.OrderBy(z => z.ZoneNumber).Aggregate("", (a,z) => a + (z.Enabled ? "1" : "0"))
-        //        + "&name=" + HttpUtility.UrlEncode(Name));
-        //}
+        public AirconWebResponse Update()
+        {
+            Enabled = ScheduledDays != ScheduledDay.None;
+            return _aircon.Get("setScheduleData?"
+                + "schedule=" + Number
+                + "&day=" + ToSetDaysString(ScheduledDays)
+                + "&startHours=" + StartTime.Hours
+                + "&startMinutes=" + StartTime.Minutes
+                + "&endHours=" + EndTime.Hours
+                + "&endMinutes=" + EndTime.Minutes
+                + "&scheduleStatus=" + (Enabled ? "1" : "0")
+                + "&zoneStatus=0"  // not sure what this is, always seems to be zero
+                + "&zones=" + ToSetZonesString(Zones)
+                + "&name=" + HttpUtility.UrlEncode(Name));
+        }
 
-        //private static string ToSetDaysString(ScheduledDay scheduledDays)
-        //{
-        //    return (scheduledDays.HasFlag(ScheduledDay.Monday) ? "1" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Tuesday) ? "2" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Wednesday) ? "3" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Thursday) ? "4" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Friday) ? "5" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Saturday) ? "6" : "")
-        //           + (scheduledDays.HasFlag(ScheduledDay.Sunday) ? "7" : "");
-        //}
+        private static string ToSetDaysString(ScheduledDay scheduledDays)
+        {
+            return ((scheduledDays & ScheduledDay.Monday) == ScheduledDay.Monday ? "1" : "")
+                 + ((scheduledDays & ScheduledDay.Tuesday) == ScheduledDay.Tuesday ? "2" : "")
+                 + ((scheduledDays & ScheduledDay.Wednesday) == ScheduledDay.Wednesday ? "3" : "")
+                 + ((scheduledDays & ScheduledDay.Thursday) == ScheduledDay.Thursday ? "4" : "")
+                 + ((scheduledDays & ScheduledDay.Friday) == ScheduledDay.Friday ? "5" : "")
+                 + ((scheduledDays & ScheduledDay.Saturday) == ScheduledDay.Saturday ? "6" : "")
+                 + ((scheduledDays & ScheduledDay.Sunday) == ScheduledDay.Sunday ? "7" : "");
+        }
+
+        private static string ToSetZonesString(ZoneStatus[] zones)
+        {
+            var aggregate = "";
+            foreach (var zone in zones)
+            {
+                aggregate += zone.Enabled ? "1" : "0";
+            }
+            return aggregate;
+        }
 
         private static ScheduledDay ParseScheduledDays(XElement element)
         {

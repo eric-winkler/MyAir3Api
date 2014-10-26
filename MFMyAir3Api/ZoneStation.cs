@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 
 namespace Winkler.MFMyAir3Api
 {
@@ -57,18 +56,17 @@ namespace Winkler.MFMyAir3Api
             return zones;
         }
 
-        //public async Task<IEnumerable<Schedule>> GetSchedulesAsync()
-        //{
-        //    var scheduleRetrievalTasks = Enumerable.Range(1, NumberOfSchedules)
-        //        .Select(s => new
-        //        {
-        //            ScheduleId = s,
-        //            ScheduleTask = _aircon.GetAsync("getScheduleData?schedule=" + s)
-        //        }).ToArray();
-        //    await Task.WhenAll(scheduleRetrievalTasks.Select(s => s.ScheduleTask));
+        public Schedule[] GetSchedules()
+        {
+            var schedules = new Schedule[NumberOfSchedules];
+            for (var scheduleId = 1; scheduleId <= NumberOfSchedules; scheduleId++)
+            {
+                var scheduleResult = _aircon.Get("getScheduleData?schedule=" + scheduleId);
+                schedules[scheduleId - 1] = new Schedule(_aircon, scheduleId, scheduleResult.InnerResponse);
+            }
 
-        //    return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
-        //}
+            return schedules;
+        }
 
         public AirconWebResponse SyncSystemClock()
         {
