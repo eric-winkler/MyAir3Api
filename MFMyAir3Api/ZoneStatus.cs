@@ -1,6 +1,4 @@
-using System.Xml.Linq;
-
-namespace Winkler.MyAir3Api
+namespace Winkler.MFMyAir3Api
 {
     public class ZoneStatus
     {

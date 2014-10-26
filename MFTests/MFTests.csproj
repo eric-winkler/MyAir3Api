@@ -32,6 +32,7 @@
     <StartupObject>Winkler.MFMyAir3Api.Tests.TestProgram</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ScheduleTests.cs" />
     <Compile Include="ZoneStationTests.cs" />
     <Compile Include="AirconWebResponseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

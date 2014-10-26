@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 using System.Text;
 using System.Xml;
 
@@ -27,6 +28,19 @@ namespace Winkler.MFMyAir3Api
             }
         }
 
+        public string Name
+        {
+            get
+            {
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
+                using (var xmlReader = XmlReader.Create(stream))
+                {
+                    xmlReader.MoveToContent();
+                    return xmlReader.Name;
+                } 
+            }
+        }
+
         public static XElement Parse(string xml)
         {
             return new XElement { Xml = xml };
@@ -41,6 +55,28 @@ namespace Winkler.MFMyAir3Api
                 var elementString = xmlReader.ReadOuterXml();
                 return elementString == null ? null : XElement.Parse(elementString);
             } 
+        }
+
+        public XElement[] Elements()
+        {
+            var elements = new ArrayList();
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
+            using (var xmlReader = XmlReader.Create(stream))
+            {
+                xmlReader.MoveToContent();
+                while (xmlReader.Depth == 0)
+                {
+                    xmlReader.Read();
+                }
+
+                while (xmlReader.Depth != 0)
+                {
+                    elements.Add(XElement.Parse(xmlReader.ReadOuterXml()));
+                }
+            }
+
+            return (XElement[]) elements.ToArray(typeof (XElement));
         }
     }
 }

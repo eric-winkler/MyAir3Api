@@ -24,6 +24,8 @@ namespace Winkler.MFMyAir3Api
                         break;
                 }
             } while ((reader.NodeType != XmlNodeType.EndElement || reader.Depth != startDepth) && reader.Read());
+
+            reader.Read();
             return accumulated;
         }
     }
