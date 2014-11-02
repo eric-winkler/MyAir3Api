@@ -42,6 +42,7 @@
     <Compile Include="ScheduledDay.cs" />
     <Compile Include="SleepTimer.cs" />
     <Compile Include="SleepTimerStatus.cs" />
+    <Compile Include="StreamEx.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="XElement.cs" />
     <Compile Include="XmlReaderEx.cs" />

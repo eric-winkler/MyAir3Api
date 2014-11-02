@@ -8,9 +8,10 @@ namespace Winkler.MyAir3Api
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
-        public AirconWebClient(Uri baseAddress)
+        public AirconWebClient(Uri baseAddress, int timeout)
         {
             _httpClient.BaseAddress = baseAddress;
+            _httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
         }
 
         public async Task<AirconWebResponse> GetAsync(string requestUri)

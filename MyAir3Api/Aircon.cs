@@ -19,7 +19,7 @@ namespace Winkler.MyAir3Api
 
         private static IAirconWebClient BuildWebClient(Uri baseAddress)
         {
-            return new AuthenticatedAirconWebClient(new AirconWebClient(baseAddress));
+            return new AuthenticatedAirconWebClient(new AirconWebClient(baseAddress, 5000));
         }
     }
 }
