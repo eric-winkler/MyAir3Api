@@ -13,6 +13,7 @@ namespace Winkler.MFMyAir3Api.Tests
             Assert.IsTrue(zoneStation != null);
             Assert.AreEqual(InverterMode.FanOnly, zoneStation.InverterMode);
             Assert.AreEqual(FanSpeed.Low, zoneStation.FanSpeed);
+            Assert.AreEqual("    ", zoneStation.ErrorCode);
         }
 
         public void CanUpdateZoneStation()

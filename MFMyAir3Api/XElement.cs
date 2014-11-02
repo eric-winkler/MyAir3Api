@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-using System.IO;
-using System.Text;
-using System.Xml;
 
 namespace Winkler.MFMyAir3Api
 {
@@ -13,18 +10,9 @@ namespace Winkler.MFMyAir3Api
         {
             get
             {
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
-                using (var xmlReader = XmlReader.Create(stream))
-                {
-                    xmlReader.MoveToContent();
-                    if (!xmlReader.Read())
-                        return Xml;
-
-                    if (xmlReader.NodeType != XmlNodeType.Text)
-                        return Xml;
-
-                    return xmlReader.Value;
-                }
+                var xmlReader = new SimpleXmlReader(Xml);
+                xmlReader.MoveToElement();
+                return xmlReader.Value;
             }
         }
 
@@ -32,12 +20,9 @@ namespace Winkler.MFMyAir3Api
         {
             get
             {
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
-                using (var xmlReader = XmlReader.Create(stream))
-                {
-                    xmlReader.MoveToContent();
-                    return xmlReader.Name;
-                } 
+                var xmlReader = new SimpleXmlReader(Xml);
+                xmlReader.MoveToElement();
+                return xmlReader.Name;
             }
         }
 
@@ -48,32 +33,21 @@ namespace Winkler.MFMyAir3Api
 
         public XElement Element(string elementName)
         {
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
-            using (var xmlReader = XmlReader.Create(stream))
-            {
-                xmlReader.ReadToFollowing(elementName);
-                var elementString = xmlReader.ReadOuterXml();
-                return elementString == null ? null : XElement.Parse(elementString);
-            } 
+            var xmlReader = new SimpleXmlReader(Xml);
+            xmlReader.MoveToElement(elementName);
+            return XElement.Parse(xmlReader.ReadOuterXml());
         }
 
         public XElement[] Elements()
         {
             var elements = new ArrayList();
 
-            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Xml)))
-            using (var xmlReader = XmlReader.Create(stream))
-            {
-                xmlReader.MoveToContent();
-                while (xmlReader.Depth == 0)
-                {
-                    xmlReader.Read();
-                }
+            var xmlReader = new SimpleXmlReader(Xml);
+            xmlReader.MoveToElement();
 
-                while (xmlReader.Depth != 0)
-                {
-                    elements.Add(XElement.Parse(xmlReader.ReadOuterXml()));
-                }
+            while (xmlReader.MoveToNextElement())
+            {
+                elements.Add(XElement.Parse(xmlReader.ReadOuterXml()));
             }
 
             return (XElement[]) elements.ToArray(typeof (XElement));

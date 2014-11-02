@@ -3,7 +3,7 @@ MyAir3Api
 
 The MyAir3Api provides a .net consumable interface for interacting with the airconditioner control functions exposed by AdvantageAir's MyAir3 controller.
 
-There is both a .net 4.5 async/await implementation, and a .net Micro Framework implementation available.
+There is both a .net 4.5 async/await implementation, and a .net Micro Framework implementation available.  The .net MF implementation has been developed against a netduino plus 2.
 
 
 ## Example Usage
