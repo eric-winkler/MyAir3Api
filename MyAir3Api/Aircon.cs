@@ -5,7 +5,14 @@ namespace Winkler.MyAir3Api
 {
     public static class Aircon
     {
-        public static async Task<ZoneStation> ConnectAsync(Uri baseAddress )
+        public static async Task<ZoneStation> ConnectAsync()
+        {
+            var locater = new AirconLocater();
+            var baseAddress = await locater.LocateAsync();
+            return await ConnectAsync(baseAddress);
+        }
+
+        public static async Task<ZoneStation> ConnectAsync(Uri baseAddress)
         {
             var aircon = BuildWebClient(baseAddress);
             return await ConnectZoneStationAsync(aircon);
