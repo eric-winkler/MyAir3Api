@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFMyAir3Api", "MFMyAir3Api\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFTests", "MFTests\MFTests.csproj", "{B9DF9245-D555-41E6-8060-01646712699D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroFramework", "MicroFramework", "{E207BBC0-9BD0-4AD5-BE5E-B2E3550E6C8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,5 +34,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{15A06254-0A08-477C-8BA7-DC761F948B38} = {E207BBC0-9BD0-4AD5-BE5E-B2E3550E6C8D}
+		{B9DF9245-D555-41E6-8060-01646712699D} = {E207BBC0-9BD0-4AD5-BE5E-B2E3550E6C8D}
 	EndGlobalSection
 EndGlobal

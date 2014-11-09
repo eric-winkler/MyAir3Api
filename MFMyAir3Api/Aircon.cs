@@ -4,9 +4,16 @@ namespace Winkler.MFMyAir3Api
 {
     public static class Aircon
     {
-        public static ZoneStation Connect(string baseAddress)
+        public static ZoneStation Connect()
         {
-            var aircon = BuildWebClient(new Uri(baseAddress));
+            var locater = new AirconLocater();
+            var baseAddress = locater.Locate();
+            return Connect(baseAddress);
+        }
+
+        public static ZoneStation Connect(Uri baseAddress)
+        {
+            var aircon = BuildWebClient(baseAddress);
             return ConnectZoneStation(aircon);
         }
 
