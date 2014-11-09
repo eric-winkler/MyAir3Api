@@ -1,5 +1,5 @@
 $parentDirectory = split-path $PSScriptRoot -parent
-$nugetPath = join-path $parentDirectory ".nuget\nuget.exe"
+$nugetPath = join-path $parentDirectory "tools\nuget.exe"
 $nuspecSource = join-path $PSScriptRoot "MyAir3Api.nuspec"
 $45buildPath = join-path $parentDirectory "MyAir3Api\bin\Release\*"
 $MF43buildPath = join-path $parentDirectory "MFMyAir3Api\bin\Release\*"
