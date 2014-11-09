@@ -36,6 +36,7 @@ TestTools/
 *.vspscc
 *.vssscc
 .builds
+nuget output/
 
 # Visual C++ cache files
 ipch/
