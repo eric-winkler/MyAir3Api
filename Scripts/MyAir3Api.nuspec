@@ -2,20 +2,22 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>MyAir3Api</id>
-        <version>1.0.0.0</version>
+        <version>1.0.0.1</version>
         <title>MyAir3 API</title>
         <authors>Eric Winkler</authors>
         <owners>Copyright (C) 2014 Eric Winkler</owners>
         <licenseUrl>https://github.com/eric-winkler/MyAir3Api/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/eric-winkler/MyAir3Api</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>The MyAir3 API allows for discovery, querying and commanding of Airconditioning units connected to a MyAir3 controller.</description>
-        <summary>.net 4.5 API for interacting with a MyAir3 airconditioning controller</summary>
+        <description>The MyAir3 API allows for discovery, querying and commanding of Airconditioning units connected to a MyAir3 controller.  Includes support for .net Micro Framework</description>
+        <summary>API for interacting with a MyAir3 airconditioning controller</summary>
         <copyright>Copyright (C) 2014 Eric Winkler.</copyright>
         <language />
-        <tags>C# MyAir AdvantageAir</tags>
+        <tags>C# MyAir AdvantageAir MF micro</tags>
         <dependencies>
             <group targetFramework=".NETFramework4.5">
+            </group>
+            <group targetFramework=".NETMicroFramework4.3">
             </group>
         </dependencies>
     </metadata>
