@@ -35,6 +35,9 @@ namespace Winkler.MFMyAir3Api
         private static bool TryParseAirconReply(string response, out string ip)
         {
             ip = null;
+            if (response == null || response.Length == 0)
+                return false;
+
             var airconReply = XElement.Parse(response);
             var systemElement = airconReply.Element("system");
             if (systemElement == null)

@@ -8,6 +8,9 @@ namespace Winkler.MFMyAir3Api
         {
             var locater = new AirconLocater();
             var baseAddress = locater.Locate();
+            if (baseAddress == null)
+                throw new InvalidOperationException("Could not locate aircon");
+
             return Connect(baseAddress);
         }
 

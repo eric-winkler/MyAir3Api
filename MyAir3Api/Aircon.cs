@@ -9,6 +9,9 @@ namespace Winkler.MyAir3Api
         {
             var locater = new AirconLocater();
             var baseAddress = await locater.LocateAsync();
+            if(baseAddress == null)
+                throw new InvalidOperationException("Could not locate aircon");
+
             return await ConnectAsync(baseAddress);
         }
 
