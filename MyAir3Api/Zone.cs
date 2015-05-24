@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using System.Web;
+﻿using System.Net;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Winkler.MyAir3Api
@@ -47,7 +47,7 @@ namespace Winkler.MyAir3Api
             return await _aircon.GetAsync("setZoneData?"
                 + "zone=" + Number
                 + "&zoneSetting=" + (Enabled ? "1" : "0")
-                + "&name=" + HttpUtility.UrlEncode(Name)
+                + "&name=" + WebUtility.UrlEncode(Name)
                 + "&userPercentSetting=" + UserPercentSetting);
         }
     }

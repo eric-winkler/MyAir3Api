@@ -37,7 +37,7 @@ namespace Winkler.MyAir3Api
         {
             ip = null;
             if (string.IsNullOrEmpty(response))
-                return false;    
+                return false;
 
             var airconReply = XElement.Parse(response);
             var systemElement = airconReply.Element("system");

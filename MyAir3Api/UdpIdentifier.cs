@@ -1,27 +1,34 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using System.Text;
+﻿using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Networking;
+using Windows.Networking.Sockets;
 
 namespace Winkler.MyAir3Api
 {
     internal class UdpIdentifier : IUdpIdentifier
     {
-        private readonly IPEndPoint _listenEndpoint = new IPEndPoint(IPAddress.Any, 3001);
-        private readonly IPEndPoint _sendEndpoint = new IPEndPoint(IPAddress.Broadcast, 3000);
-        private  readonly byte[] _datagram = Encoding.ASCII.GetBytes("identify");
+        private const string ListenPort = "3001";
+        private const string SendPort = "3000";
+        private static readonly HostName BroadcastHostname = new HostName("255.255.255.255");
+        private readonly byte[] _datagram = { 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x66, 0x79 }; // "identify"
 
         public async Task<string> IdentifyAirconAsync()
         {
-            using (var udpClient = new UdpClient(_listenEndpoint))
+            var tcs = new TaskCompletionSource<string>();
+            using (var listenSocket = new DatagramSocket())
             {
-                var listenTask = udpClient.ReceiveAsync();
-                await udpClient.SendAsync(_datagram, _datagram.Length, _sendEndpoint);
-                await Task.WhenAny(listenTask, Task.Delay(1000));
+                listenSocket.MessageReceived += (sender, args) =>
+                                                {
+                                                    var reader = args.GetDataReader();
+                                                    tcs.SetResult(reader.ReadString(reader.UnconsumedBufferLength));
+                                                };
+                await listenSocket.BindServiceNameAsync(ListenPort);
                 
-                return listenTask.IsCompleted
-                    ? Encoding.ASCII.GetString(listenTask.Result.Buffer)
-                    : null;
+                var outputStream = await listenSocket.GetOutputStreamAsync(BroadcastHostname, SendPort);
+                await outputStream.WriteAsync(_datagram.AsBuffer());
+
+                return await tcs.Task;
             }
         }
     }

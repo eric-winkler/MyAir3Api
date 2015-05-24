@@ -16,7 +16,7 @@ namespace Winkler.MyAir3Api
             }
         }
 
-        private AirconWebResponse()  { }
+        private AirconWebResponse() { }
 
         public static AirconWebResponse Parse(string text)
         {
