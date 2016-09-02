@@ -16,8 +16,8 @@ namespace Winkler.MyAir3Api
             using (var udpClient = new UdpClient(_listenEndpoint))
             {
                 var listenTask = udpClient.ReceiveAsync();
-                await udpClient.SendAsync(_datagram, _datagram.Length, _sendEndpoint);
-                await Task.WhenAny(listenTask, Task.Delay(1000));
+                await udpClient.SendAsync(_datagram, _datagram.Length, _sendEndpoint).ConfigureAwait(false);
+                await Task.WhenAny(listenTask, Task.Delay(1000)).ConfigureAwait(false);
 
                 return listenTask.IsCompleted
                     ? Encoding.ASCII.GetString(listenTask.Result.Buffer)

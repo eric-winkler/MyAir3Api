@@ -16,7 +16,7 @@ namespace Winkler.MyAir3Api
 
         public async Task<AirconWebResponse> GetAsync(string requestUri)
         {
-            var stringResponse = await _httpClient.GetStringAsync(requestUri);
+            var stringResponse = await _httpClient.GetStringAsync(requestUri).ConfigureAwait(false);
             return AirconWebResponse.Parse(stringResponse);
         }
     }

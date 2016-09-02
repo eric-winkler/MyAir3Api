@@ -30,7 +30,8 @@ namespace Winkler.MyAir3Api
                 + "&startTimeMinutes=" + DateTime.Now.Minute
                 + "&endTimeHours=" + DateTime.Now.Add(TimeRemaining).Hour
                 + "&endTimeMinutes=" + DateTime.Now.Add(TimeRemaining).Minute
-                + "&scheduleStatus=" + (int) Status);
+                + "&scheduleStatus=" + (int) Status)
+                .ConfigureAwait(false);
         }
     }
 }

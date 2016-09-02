@@ -48,7 +48,8 @@ namespace Winkler.MyAir3Api
                 + "zone=" + Number
                 + "&zoneSetting=" + (Enabled ? "1" : "0")
                 + "&name=" + WebUtility.UrlEncode(Name)
-                + "&userPercentSetting=" + UserPercentSetting);
+                + "&userPercentSetting=" + UserPercentSetting)
+                .ConfigureAwait(false);
         }
     }
 }

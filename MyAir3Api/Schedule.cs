@@ -50,7 +50,7 @@ namespace Winkler.MyAir3Api
                 z.Enabled = false;
             }
 
-            return await UpdateAsync();
+            return await UpdateAsync().ConfigureAwait(false);
         }
 
         public async Task<AirconWebResponse> UpdateAsync()
@@ -66,7 +66,8 @@ namespace Winkler.MyAir3Api
                 + "&scheduleStatus=" + (Enabled ? "1" : "0")
                 + "&zoneStatus=0"  // not sure what this is, always seems to be zero
                 + "&zones=" + Zones.OrderBy(z => z.ZoneNumber).Aggregate("", (a,z) => a + (z.Enabled ? "1" : "0"))
-                + "&name=" + WebUtility.UrlEncode(Name));
+                + "&name=" + WebUtility.UrlEncode(Name))
+                .ConfigureAwait(false);
         }
 
         private static string ToSetDaysString(ScheduledDay scheduledDays)

@@ -26,7 +26,7 @@ namespace Winkler.MyAir3Api
             while (retriesLeft > 0 && !ipLocated)
             {
                 retriesLeft--;
-                var response = await _udpIdentifier.IdentifyAirconAsync();
+                var response = await _udpIdentifier.IdentifyAirconAsync().ConfigureAwait(false);
                 ipLocated = TryParseAirconReply(response, out ip);
             }
 

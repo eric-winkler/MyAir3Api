@@ -56,7 +56,7 @@ namespace Winkler.MyAir3Api
                     ZoneId = z,
                     ZoneTask = _aircon.GetAsync("getZoneData?zone=" + z)
                 }).ToArray();
-            await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask));
+            await Task.WhenAll(zoneRetrievalTasks.Select(z => z.ZoneTask)).ConfigureAwait(false);
 
             return zoneRetrievalTasks.Select(z => new Zone(_aircon, z.ZoneId, z.ZoneTask.Result.InnerResponse));
         }
@@ -69,7 +69,7 @@ namespace Winkler.MyAir3Api
                     ScheduleId = s,
                     ScheduleTask = _aircon.GetAsync("getScheduleData?schedule=" + s)
                 }).ToArray();
-            await Task.WhenAll(scheduleRetrievalTasks.Select(s => s.ScheduleTask));
+            await Task.WhenAll(scheduleRetrievalTasks.Select(s => s.ScheduleTask)).ConfigureAwait(false);
 
             return scheduleRetrievalTasks.Select(s => new Schedule(_aircon, s.ScheduleId, s.ScheduleTask.Result.InnerResponse));
         }
@@ -83,12 +83,13 @@ namespace Winkler.MyAir3Api
                                             + "&day=" + now.Day
                                             + "&month=" + now.Month
                                             + "&year=" + now.Year
-                                            + "&dow=" + ToIntDayOfWeek(now.DayOfWeek));
+                                            + "&dow=" + ToIntDayOfWeek(now.DayOfWeek))
+                                            .ConfigureAwait(false);
         }
 
         public async Task<SleepTimer> GetSleepTimerAsync()
         {
-            var zoneTimer = await _aircon.GetAsync("getZoneTimer");
+            var zoneTimer = await _aircon.GetAsync("getZoneTimer").ConfigureAwait(false);
             return new SleepTimer(_aircon, zoneTimer.InnerResponse.Element("zoneTimer"));
         }
 
@@ -98,7 +99,8 @@ namespace Winkler.MyAir3Api
                 + "airconOnOff=" + (PowerOn ? "1" : "0")
                 + "&fanSpeed=" + (int)FanSpeed
                 + "&mode=" + (int)InverterMode
-                + "&centralDesiredTemp=" + CentralDesiredTemp);
+                + "&centralDesiredTemp=" + CentralDesiredTemp)
+                .ConfigureAwait(false);
         }
 
         private static int ToIntDayOfWeek(DayOfWeek dayOfWeek)

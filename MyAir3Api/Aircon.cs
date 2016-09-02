@@ -8,22 +8,22 @@ namespace Winkler.MyAir3Api
         public static async Task<ZoneStation> ConnectAsync()
         {
             var locater = new AirconLocater();
-            var baseAddress = await locater.LocateAsync();
+            var baseAddress = await locater.LocateAsync().ConfigureAwait(false);
             if (baseAddress == null)
                 throw new InvalidOperationException("Could not locate aircon");
 
-            return await ConnectAsync(baseAddress);
+            return await ConnectAsync(baseAddress).ConfigureAwait(false);
         }
 
         public static async Task<ZoneStation> ConnectAsync(Uri baseAddress)
         {
             var aircon = BuildWebClient(baseAddress);
-            return await ConnectZoneStationAsync(aircon);
+            return await ConnectZoneStationAsync(aircon).ConfigureAwait(false);
         }
 
         internal static async Task<ZoneStation> ConnectZoneStationAsync(IAirconWebClient aircon)
         {
-            var systemData = await aircon.GetAsync("getSystemData");
+            var systemData = await aircon.GetAsync("getSystemData").ConfigureAwait(false);
             return new ZoneStation(aircon, systemData.InnerResponse.Element("system"));
         }
 
