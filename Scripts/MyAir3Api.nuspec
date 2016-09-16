@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>MyAir3Api</id>
-        <version>1.2.1</version>
+        <version>1.2.2</version>
         <title>MyAir3 API</title>
         <authors>Eric Winkler</authors>
         <owners>Copyright (C) 2014 Eric Winkler</owners>
