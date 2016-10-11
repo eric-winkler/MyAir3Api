@@ -1,9 +1,11 @@
 MyAir 3 Api
 =========
 
+![Build Status](https://ci.appveyor.com/api/projects/status/e5pj91jdgmhh8v2h/branch/master?svg=true)
+
 The MyAir3Api provides a .net consumable interface for interacting with the airconditioner control functions exposed by AdvantageAir's MyAir3 controller.
 
-There is both a .net 4.5 async/await implementation, and a .net Micro Framework implementation available.  The .net MF implementation has been developed against a netduino plus 2.
+There is both a .netstandard 1.3 implementation, and a .net Micro Framework implementation available.  THe netstandard implementation has been developed and tested against a rasberry pi running win10 IoT as well as a win10 desktop machine. The .net MF implementation has been developed and tested against a netduino plus 2.
 
 ## Recent Changes
  - Automatic discovery of aircon controllers via UDP broadcast
